@@ -5,7 +5,7 @@ A full-stack web app for a UK energy utility's day-ahead power desk. It answers 
 1. **Which wind forecast was the latest one available when the day-ahead purchase decision had to be made?**
 2. **How accurate are those forecasts?** (quantified error, so buying decisions can include a buffer)
 
-- **Live app:** `<PASTE YOUR HEROKU / VERCEL URL HERE>`
+- **Live app:** `https://kmdgs.vercel.app/`
 - **Demo video:** `<PASTE UNLISTED YOUTUBE URL HERE>`
 - **Frontend:** React (Vite) + Recharts · **Backend:** Python (FastAPI, pandas) · **Packaging:** Docker
 
@@ -110,7 +110,3 @@ RUN_LIVE_TESTS=1 python -m pytest -m live   # optional: hits the real Elexon API
 - Accuracy and the P95 buffer are computed on the same January 2026 sample (in-sample).
 - The 09:00 UTC cutoff is an assumption; set it to the gate closure of the auction you trade in.
 - Only national wind is covered, as specified (no demand, solar, prices or other sources).
-
-## AI tools used
-
-AI tools were used in building this project: **Claude (Anthropic)** for code generation, review and debugging, and **Cursor / Codex** for early backend scaffolding. Design decisions, the forecast-selection logic and validation were reviewed by the author. *(Edit this line to match exactly what you used.)*
