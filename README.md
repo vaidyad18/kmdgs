@@ -61,28 +61,82 @@ The frontend and backend can be deployed as separate Vercel projects. The fronte
 ## Repository layout
 
 ```
-.
-├── Dockerfile            # multi-stage: build React, then Python image serving both
-├── heroku.yml            # Heroku container deploy
+wind-forecast-desk/
+├── .dockerignore
+├── .gitignore
+├── .python-version
+├── .vercelignore
+├── Dockerfile
 ├── docker-compose.yml
+├── README.md
+├── requirements.txt
+├── vercel.json
+│
+├── api/
+│   └── index.py
+│
 ├── backend/
+│   ├── .dockerignore
+│   ├── .env.example
+│   ├── .gitignore
+│   ├── Dockerfile
+│   ├── pytest.ini
+│   ├── README.md
+│   ├── requirements.txt
+│   ├── ruff.toml
+│   │
 │   ├── app/
-│   │   ├── main.py               # FastAPI app, error handlers, static serving
-│   │   ├── config.py             # env settings + the decision-cutoff rule text
-│   │   ├── elexon_client.py      # HTTP client: chunking, retries, back-off
-│   │   ├── data_store.py         # normalise/validate, disk cache, snapshot fallback, refresh
-│   │   ├── forecast_selection.py # latest-forecast-before-cutoff logic (pure, vectorised)
-│   │   ├── metrics.py            # accuracy metrics, breakdowns, insights
-│   │   ├── routers/              # health/meta, data, accuracy, refresh endpoints
-│   │   ├── models.py, deps.py, jsonutil.py, build_snapshot.py
-│   ├── data/snapshot/    # committed Jan 2026 data (actuals.csv, forecasts.csv)
-│   ├── tests/            # pytest: selection logic, metrics, API (Elexon mocked)
-│   └── README.md         # backend details and env vars
+│   │   ├── __init__.py
+│   │   ├── build_snapshot.py
+│   │   ├── config.py
+│   │   ├── data_store.py
+│   │   ├── deps.py
+│   │   ├── elexon_client.py
+│   │   ├── forecast_selection.py
+│   │   ├── jsonutil.py
+│   │   ├── main.py
+│   │   ├── metrics.py
+│   │   ├── models.py
+│   │   ├── state.py
+│   │   └── routers/
+│   │       ├── __init__.py
+│   │       ├── accuracy.py
+│   │       ├── data.py
+│   │       ├── health.py
+│   │       └── refresh.py
+│   │
+│   ├── data/
+│   │   └── snapshot/
+│   │       ├── actuals.csv
+│   │       └── forecasts.csv
+│   │
+│   └── tests/
+│       ├── conftest.py
+│       ├── test_api.py
+│       ├── test_forecast_selection.py
+│       ├── test_live.py
+│       └── test_metrics.py
+│
 └── frontend/
-    ├── src/
-    │   ├── App.jsx, api.js, utils.js, styles.css
-    │   └── components/   # DecisionView, AccuracyView, VintagesView, MethodView, ui
-    └── package.json, vite.config.js, vercel.json
+    ├── .env.production
+    ├── .gitignore
+    ├── index.html
+    ├── package.json
+    ├── package-lock.json
+    ├── vite.config.js
+    │
+    └── src/
+        ├── App.jsx
+        ├── api.js
+        ├── main.jsx
+        ├── styles.css
+        ├── utils.js
+        └── components/
+            ├── AccuracyView.jsx
+            ├── DecisionView.jsx
+            ├── MethodView.jsx
+            ├── ui.jsx
+            └── VintagesView.jsx
 
 ```
 
