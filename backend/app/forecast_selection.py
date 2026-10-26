@@ -1,5 +1,3 @@
-"""Pure, vectorized selection of the latest eligible wind forecast vintage."""
-
 from __future__ import annotations
 
 from datetime import UTC, date, datetime, time, timedelta
@@ -11,10 +9,6 @@ LATEST_COLUMNS = ["startTime", "publishTime", "forecast_mw", "horizon_hours"]
 
 
 def decision_cutoff(delivery_day: date, cutoff_time: str = "09:00") -> datetime:
-    """Gate-closure instant for delivery day D: D-1 at cutoff_time, UTC.
-
-    January 2026 is GMT in Europe/London, so 09:00 UTC == 09:00 London.
-    """
     hour, minute = map(int, cutoff_time.split(":"))
     return datetime.combine(delivery_day - timedelta(days=1), time(hour, minute), tzinfo=UTC)
 
@@ -31,15 +25,6 @@ def _prepare(forecasts: pd.DataFrame) -> pd.DataFrame:
 
 
 def select_decision_forecasts(forecasts: pd.DataFrame, cutoff_time: str = "09:00") -> pd.DataFrame:
-    """Latest forecast available at day-ahead gate closure, with no look-ahead.
-
-    For each target ``startTime`` T on delivery day D, keep vintages with the
-    same T whose ``publishTime`` is <= cutoff(D-1), then take MAX(publishTime).
-
-    Vectorized via a single cutoff timestamp per row, a boolean mask, a sort,
-    and ``drop_duplicates(startTime, keep='last')``. Duplicate
-    (startTime, publishTime) rows are collapsed first.
-    """
     if forecasts.empty:
         return _empty(DECISION_COLUMNS)
     data = _prepare(forecasts)
@@ -57,11 +42,6 @@ def select_decision_forecasts(forecasts: pd.DataFrame, cutoff_time: str = "09:00
 
 
 def select_latest_before_target(forecasts: pd.DataFrame) -> pd.DataFrame:
-    """Latest vintage published at or before the target time (horizon analysis).
-
-    Distinct from decision-time mode: this is allowed to use intra-day updates
-    after the D-1 gate closure, but still forbids publishTime > startTime.
-    """
     if forecasts.empty:
         return _empty(LATEST_COLUMNS)
     data = _prepare(forecasts)
@@ -75,11 +55,6 @@ def select_latest_before_target(forecasts: pd.DataFrame) -> pd.DataFrame:
 
 
 def select_all_vintages_before_target(forecasts: pd.DataFrame) -> pd.DataFrame:
-    """Every vintage published at or before the target time (for horizon analysis).
-
-    Unlike ``select_latest_before_target`` this keeps all vintages, so each
-    forecast horizon (0-6h, 6-12h, ... 48h+) can be scored separately.
-    """
     if forecasts.empty:
         return _empty(LATEST_COLUMNS)
     data = _prepare(forecasts)
