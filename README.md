@@ -54,21 +54,9 @@ Python 3.11 or 3.12 and Node 18+ are recommended.
 
 ## Deployment
 
-### Heroku (single container, serves UI and API)
+### Vercel (frontend and API services)
 
-```bash
-heroku login
-heroku create <anonymous-app-name>
-heroku stack:set container -a <anonymous-app-name>
-git push heroku main              # builds from Dockerfile via heroku.yml
-heroku open -a <anonymous-app-name>
-```
-
-Heroku sets `$PORT`; the container honours it. Heroku no longer has a free tier, so an Eco dyno (about $5/month) is needed.
-
-### Vercel (frontend only)
-
-Vercel can host the frontend; the API must live elsewhere (e.g. the Heroku app above). Import the `frontend/` folder in Vercel and set `VITE_API_BASE_URL=https://<your-heroku-app>.herokuapp.com`. The backend allows all origins by default (`CORS_ORIGINS=*`).
+Import the repository root as one Vercel project. The root [`vercel.json`](./vercel.json) builds the Vite frontend and FastAPI backend as separate services on one domain: `/api/*` routes to the backend and all other paths route to the frontend. Leave `VITE_API_BASE_URL` unset in Vercel so browser requests use the same-domain `/api` route. The frontend calls the backend through the browser and neither service makes a server-to-server call to the other, so no service binding is needed. The backend's outbound data source is the external Elexon BMRS API.
 
 ## Repository layout
 

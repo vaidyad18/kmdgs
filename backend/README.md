@@ -92,7 +92,3 @@ MAPE is the mean of `|error|/actual` where actual ≠ 0. NMAE is `MAE / mean(act
 python -m pytest
 RUN_LIVE_TESTS=1 python -m pytest -m live
 ```
-
-## AI tools used
-
-AI tools used: Claude (Anthropic) and Cursor/Codex for scaffolding, code generation and review; design decisions, selection logic and validation reviewed by the author. (Edit to match what you used.)
