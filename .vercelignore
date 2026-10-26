@@ -1,0 +1,8 @@
+**/node_modules
+**/.venv
+**/.venv312
+**/__pycache__
+**/.pytest_cache
+**/.ruff_cache
+**/data_cache
+.git

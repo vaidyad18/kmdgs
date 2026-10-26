@@ -1,0 +1,10 @@
+line-length = 110
+target-version = "py311"
+exclude = ["data", "data_cache", ".venv", ".venv312"]
+
+[lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501", "UP038", "B008"]
+
+[lint.per-file-ignores]
+"tests/*" = ["B018"]
