@@ -54,9 +54,9 @@ Python 3.11 or 3.12 and Node 18+ are recommended.
 
 ## Deployment
 
-### Vercel (frontend and API services)
+### Vercel
 
-Import the repository root as one Vercel project. The root [`vercel.json`](./vercel.json) builds the Vite frontend and FastAPI backend as separate services on one domain: `/api/*` routes to the backend and all other paths route to the frontend. Leave `VITE_API_BASE_URL` unset in Vercel so browser requests use the same-domain `/api` route. The frontend calls the backend through the browser and neither service makes a server-to-server call to the other, so no service binding is needed. The backend's outbound data source is the external Elexon BMRS API.
+The frontend and backend can be deployed as separate Vercel projects. The frontend production build uses `VITE_API_BASE_URL` from [`frontend/.env.production`](./frontend/.env.production) to call the backend; change it to your backend's public base URL if your deployment changes. Alternatively, set `VITE_API_BASE_URL` in the frontend Vercel project's Environment Variables (that setting takes precedence over the file) and redeploy the frontend. If deploying both as Vercel Services under one domain with the root [`vercel.json`](./vercel.json), leave the variable unset so requests use the same-origin `/api` rewrite instead.
 
 ## Repository layout
 
